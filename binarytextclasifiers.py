@@ -63,8 +63,6 @@ class TextClassifier:
         self.path_model = args.path_model
         self.output_path = args.output_path
         
-        
-        
 
     def __matthews_correlation(self, y_true, y_pred):
         y_pred_pos = K.round(K.clip(y_pred, 0, 1))
@@ -97,6 +95,7 @@ class TextClassifier:
         model = Model(inputs=inputs,outputs=layer)
         return model
     
+    
     def __get_data_train(self, return_x: bool = True):
         
         df = pd.read_csv(self.data_path, encoding='latin-1')
@@ -106,12 +105,12 @@ class TextClassifier:
         else:
             y = df[self.target_column]
             return to_categorical(y)
+    
         
     def __get_data_inference(self):
         df = pd.read_csv(self.data_path, encoding='latin-1')
         return df[self.text_column]
     
-        
             
     def preparate_data_train(self, return_train: bool = True):
         stemmer = SnowballStemmer(self.language)
@@ -145,13 +144,8 @@ class TextClassifier:
         tok.fit_on_texts(X)
         sequences = tok.texts_to_sequences(X)
         return sequence.pad_sequences(sequences, maxlen=self.max_len)
-        
-            
-        
-        
-        
     
-       
+        
     def create_model(self):
         model = self.define_model()
         model.compile(loss=self.__matthews_correlation, optimizer=RMSprop(), metrics=['accuracy'])
