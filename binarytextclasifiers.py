@@ -133,6 +133,7 @@ class TextClassifier:
             test_sequences = tok.texts_to_sequences(X_test)
             test_sequences_matrix = sequence.pad_sequences(test_sequences, maxlen=self.max_len)
             return (Y_test, test_sequences_matrix)
+
     
     def preparate_data_inferece(self):
         stemmer = SnowballStemmer(self.language)
@@ -150,6 +151,7 @@ class TextClassifier:
         model = self.define_model()
         model.compile(loss=self.__matthews_correlation, optimizer=RMSprop(), metrics=['accuracy'])
         return model
+
     
     def train_model(self):
         model = self.create_model()
@@ -157,6 +159,7 @@ class TextClassifier:
         model.fit(train_data[1], train_data[0], batch_size=128,epochs=10,
                   validation_split=0.2,callbacks=[EarlyStopping(monitor='val_loss', min_delta=0.0001)])
         return model
+
     
     def main(self):
         if self.mode == 'train':
@@ -194,29 +197,9 @@ class TextClassifier:
             logging.error('{} is not a valid value'.format(self.mode))
             raise ValueError('{} is not a valid value'.format(self.mode))
             
-                        
+                      
 if __name__ == '__main__':
     print('The process began at {}'.format(str(datetime.datetime.now())))
     model = TextClassifier()
     model.main()
     print('The process ended at {}'.format(str(datetime.datetime.now())))
-    
-
-
-
-    
-    
-        
-    
-        
-        
-        
-            
-            
-            
-        
-        
-        
-        
-        
-
